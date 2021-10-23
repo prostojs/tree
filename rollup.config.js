@@ -1,6 +1,7 @@
 import path from 'path'
 import ts from 'rollup-plugin-typescript2'
 import replace from '@rollup/plugin-replace'
+import { dye } from '@prostojs/dye'
 
 const masterVersion = require('./package.json').version
 const packageDir = path.resolve('./')
@@ -11,6 +12,10 @@ const name = packageOptions.filename || path.basename(packageDir)
 
 // ensure TS checks only once for each build
 let hasTSChecked = false
+
+const s = {
+  warning: dye('YELLOW'),
+}
 
 const outputConfigs = {
   'esm-bundler': {
@@ -69,7 +74,7 @@ export default packageConfigs
 
 function createConfig(format, output, plugins = []) {
   if (!output) {
-    console.log(require('chalk').yellow(`invalid format: "${format}"`))
+    console.log(s.warning(`invalid format: "${format}"`))
     process.exit(1)
   }
 
