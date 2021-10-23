@@ -25,7 +25,7 @@ Via CDN:
 ## Usage
 
 ```js
-const { ProstoTree } = require('@prosto/tree')
+const { ProstoTree } = require('@prostojs/tree')
 
 const tree = new ProstoTree()
 
