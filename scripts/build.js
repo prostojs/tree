@@ -1,9 +1,9 @@
 const fs = require('fs-extra')
 const path = require('path')
-const chalk = require('chalk')
 const execa = require('execa')
 const { gzipSync } = require('zlib')
 const { compress } = require('brotli')
+const { dye } = require('@prostojs/dye')
 
 const args = require('minimist')(process.argv.slice(2))
 const formats = args.formats || args.f
@@ -22,6 +22,11 @@ async function run() {
   checkSize()
 }
 
+const s = {
+  yellow: dye('YELLOW', 'BOLD'),
+  green: dye('GREEN', 'BOLD'),
+  gray: dye('GREEN', 'BOLD'),
+}
 
 async function build() {
   const pkgDir = path.resolve(`./`)
@@ -62,7 +67,7 @@ async function build() {
   if (buildTypes && pkg.types) {
     console.log()
     console.log(
-      chalk.bold(chalk.yellow(`Rolling up type definitions for ${ target }...`))
+      s.yellow(`Rolling up type definitions for ${ target }...`)
     )
 
     // build types
@@ -91,7 +96,7 @@ async function build() {
         await fs.writeFile(dtsPath, existing + '\n' + toAdd.join('\n'))
       }
       console.log(
-        chalk.bold(chalk.green(`API Extractor completed successfully.`))
+        s.green(`API Extractor completed successfully.`)
       )
     } else {
       console.error(
@@ -124,8 +129,7 @@ function checkFileSize(filePath) {
   const compressed = compress(file)
   const compressedSize = (compressed.length / 1024).toFixed(2) + 'kb'
   console.log(
-    `${chalk.gray(
-      chalk.bold(path.basename(filePath))
+    `${s.gray(path.basename(filePath)
     )} min:${minSize} / gzip:${gzippedSize} / brotli:${compressedSize}`
   )
 }

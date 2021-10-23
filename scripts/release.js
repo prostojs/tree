@@ -4,11 +4,18 @@ const execa = require('execa')
 const { prompt } = require('enquirer')
 const version = require('../package.json').version
 const semver = require('semver')
-const chalk = require('chalk')
+const { dye } = require('@prostojs/dye')
 const run = (bin, args, opts = {}) =>
   execa(bin, args, { stdio: 'inherit', ...opts })
 const bin = name => path.resolve(__dirname, '../node_modules/.bin/' + name)  
-const step = msg => console.log(chalk.cyan(msg))
+
+const s = {
+    step: dye('CYAN'),
+    error: dye('RED_BRIGHT'),
+    good: dye('GREEN', 'BOLD'),
+}
+
+const step = msg => console.log(s.step(msg))
 
 const branch = execa.sync('git', ['branch', '--show-current']).stdout
 const inc = i => {
@@ -28,7 +35,7 @@ const commitMessage = execa.sync('git', ['log', '-1', '--pretty=%B']).stdout
 
 const gitStatus = execa.sync('git', ['status']).stdout
 if (gitStatus.indexOf('nothing to commit, working tree clean') < 0) {
-    console.error(chalk.redBright('Please commit all the changes first.'))
+    console.error(s.error('Please commit all the changes first.'))
     process.exit(1)
 }
 
@@ -118,6 +125,6 @@ async function main() {
     step('\nPublishing ...')
     execa.sync('npm', ['publish', '--access', 'public'])
     
-    console.log(chalk.green('✓ All done!'))
+    console.log(s.good('✓ All done!'))
 }
 
