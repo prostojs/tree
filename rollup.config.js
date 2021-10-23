@@ -84,6 +84,9 @@ function createConfig(format, output, plugins = []) {
   output.exports = 'named'
   output.sourcemap = !!process.env.SOURCE_MAP
   output.externalLiveBindings = false
+  output.globals = {
+    '@prostojs/dye': 'ProstoDye'
+  }
 
   if (isGlobalBuild) {
     output.name = packageOptions.name
@@ -118,7 +121,7 @@ function createConfig(format, output, plugins = []) {
     if (!packageOptions.enableNonBrowserBranches) {
       // normal browser builds - non-browser only imports are tree-shaken,
       // they are only listed here to suppress warnings.
-      external = ['source-map', '@babel/parser', 'estree-walker']
+      external = ['source-map', '@babel/parser', 'estree-walker', ...Object.keys(pkg.dependencies || {})]
     }
   } else {
     // Node / esm-bundler builds.
@@ -126,7 +129,7 @@ function createConfig(format, output, plugins = []) {
     external = [
       ...Object.keys(pkg.dependencies || {}),
       ...Object.keys(pkg.peerDependencies || {}),
-      ...['path', 'url', 'stream']
+      ...['path', 'url', 'stream'],
     ]
   }
 

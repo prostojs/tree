@@ -16,7 +16,11 @@ ProstoTree
 
 npm: `npm install @prostojs/tree`
 
-Via CDN: `<script src="https://unpkg.com/@prostojs/tree"></script>`
+Via CDN:
+```
+<script src="https://unpkg.com/@prostojs/dye"></script>
+<script src="https://unpkg.com/@prostojs/tree"></script>
+```
 
 ## Usage
 
