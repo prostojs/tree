@@ -1,6 +1,6 @@
 import { dye } from '@prostojs/dye'
 
-const dim = dye('DIM')
+const dim = dye('dim')
 
 const branch1 = dim('└── ')
 const branch2 = dim('├── ')
