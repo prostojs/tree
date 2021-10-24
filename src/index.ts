@@ -21,7 +21,7 @@ export class ProstoTree<NodeType = unknown> {
 
     private _render(root: NodeType): string {
         const { children, renderLabel } = this.options
-        let s = `${ renderLabel(root) }\n`
+        let s = `${ renderLabel(root, '') }\n`
 
         if (root) {
             treeNode(root)
@@ -34,7 +34,7 @@ export class ProstoTree<NodeType = unknown> {
                 c.forEach((childNode, i) => {
                     const last = i + 1 === l
                     const branch = last ? branch1 : branch2
-                    s += behind + branch + renderLabel(childNode as NodeType) + '\n'
+                    s += behind + branch + renderLabel(childNode as NodeType, behind) + '\n'
                     if (typeof childNode === 'object') {
                         treeNode(childNode, behind + (last ? ' ' : branch3) + '   ')
                     }
@@ -59,5 +59,5 @@ export class ProstoTree<NodeType = unknown> {
 export interface TProstoTreeOptions<NodeType = unknown> {
     label: string,
     children: string,
-    renderLabel: (node: NodeType) => string
+    renderLabel: (node: NodeType, behind: string) => string
 }
