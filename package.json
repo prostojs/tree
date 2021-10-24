@@ -1,6 +1,6 @@
 {
   "name": "@prostojs/tree",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Print tree",
   "main": "index.js",
   "module": "dist/tree.esm-bundler.js",
