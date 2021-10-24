@@ -34,9 +34,10 @@ export class ProstoTree<NodeType = unknown> {
                 c.forEach((childNode, i) => {
                     const last = i + 1 === l
                     const branch = last ? branch1 : branch2
-                    s += behind + branch + renderLabel(childNode as NodeType, behind) + '\n'
+                    const nextBehind = behind + (last ? ' ' : branch3) + '   '
+                    s += behind + branch + renderLabel(childNode as NodeType, nextBehind) + '\n'
                     if (typeof childNode === 'object') {
-                        treeNode(childNode, behind + (last ? ' ' : branch3) + '   ')
+                        treeNode(childNode, nextBehind)
                     }
                 })
             }
