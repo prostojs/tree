@@ -1,3 +1,12 @@
+## [0.1.3](https://github.com/prostojs/tree/compare/v0.1.2...v0.1.3) (2021-10-24)
+
+
+### Bug Fixes
+
+* **'render':** pass behind to renderLabel ([d952b1a](https://github.com/prostojs/tree/commit/d952b1ae8da3ae5a6866f55fdf70daf3da99daa9))
+
+
+
 ## [0.1.2](https://github.com/prostojs/tree/compare/v0.1.1...v0.1.2) (2021-10-24)
 
 
