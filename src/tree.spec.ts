@@ -1,8 +1,8 @@
-import { ProstoTree } from './';
+import { ProstoTree } from './'
 
 describe('ProstoTree', () => {
     it('must build tree', () => {
-        const tree = new ProstoTree();
+        const tree = new ProstoTree()
         const result = tree.render({
             label: 'root',
             children: [
@@ -27,6 +27,6 @@ describe('ProstoTree', () => {
     ├── more
     ├── nodes
     └── nested
-        └── deeep\n`);
-    });
-});
+        └── deeep\n`)
+    })
+})

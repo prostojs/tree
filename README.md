@@ -3,7 +3,6 @@
 <a  href="https://github.com/prostojs/tree/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-gray?style=for-the-badge" />
 </a>
-    <img src="https://img.shields.io/badge/Dependencies-0-gray?style=for-the-badge" />
 </p>
 
 Light and easy **output in tree** library.

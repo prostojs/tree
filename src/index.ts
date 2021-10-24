@@ -21,10 +21,10 @@ export class ProstoTree<NodeType = unknown> {
 
     private _render(root: NodeType): string {
         const { children, renderLabel } = this.options
-        let s = `${ renderLabel(root) }\n`;
+        let s = `${ renderLabel(root) }\n`
 
         if (root) {
-            treeNode(root);
+            treeNode(root)
         }
         
         function treeNode(node: unknown, behind = '') {
@@ -38,7 +38,7 @@ export class ProstoTree<NodeType = unknown> {
                     if (typeof childNode === 'object') {
                         treeNode(childNode, behind + (last ? ' ' : branch3) + '   ')
                     }
-                });
+                })
             }
         }
 
