@@ -3,6 +3,7 @@
 <a  href="https://github.com/prostojs/tree/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-gray?style=for-the-badge" />
 </a>
+    <img src="https://img.shields.io/badge/Dependencies-0-gray?style=for-the-badge" />
 </p>
 
 Light and easy **output in tree** library.
@@ -54,11 +55,18 @@ tree.print({
 const options = {
     label: '<name of prop with label>',
     children: '<name of prop with array of children>',
-    renderLabel: (node) => '<render the node content yourself>'
+    renderLabel: (node) => '<render the node content yourself>',
+    branchWidth: 2, // the horizontal length of branch tail
+    branches: {
+        vLine: '│',     // vertical line character
+        hLine: '─',     // horizontal line character (repeated <branchWidth> times)
+        end: '└',       // ending branch character
+        middle: '├',    // middle branch character
+    }
 }
+
 const tree = new ProstoTree(options)
 
-const resultNoColored = tree.render()       // colors removed
-const resultWithColors = tree.render(true)  // colors preserved
+const stringResult = tree.render()
 tree.print() // console.log
 ```

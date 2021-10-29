@@ -4,8 +4,8 @@
   "description": "Print tree",
   "main": "index.js",
   "module": "dist/tree.esm-bundler.js",
-  "unpkg": "dist/tree.global.js",
-  "jsdelivr": "dist/tree.global.js",
+  "unpkg": "dist/tree.global.prod.js",
+  "jsdelivr": "dist/tree.global.prod.js",
   "types": "dist/tree.d.ts",
   "files": [
     "index.js",
@@ -38,7 +38,6 @@
     ]
   },
   "dependencies": {
-    "@prostojs/dye": "^0.1.0"
   },
   "gitHooks": {
     "commit-msg": "node scripts/verifyCommit.js"
@@ -51,6 +50,7 @@
   "homepage": "https://github.com/prostojs/tree#readme",
   "devDependencies": {
     "@microsoft/api-extractor": "^7.15.1",
+    "@prostojs/dye": "^0.2.0",
     "@rollup/plugin-commonjs": "^21.0.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
