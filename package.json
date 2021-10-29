@@ -1,6 +1,6 @@
 {
   "name": "@prostojs/tree",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Print tree",
   "main": "index.js",
   "module": "dist/tree.esm-bundler.js",
@@ -37,8 +37,7 @@
       "global"
     ]
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "gitHooks": {
     "commit-msg": "node scripts/verifyCommit.js"
   },

@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/prostojs/tree/compare/v0.1.3...v0.2.0) (2021-10-29)
+
+
+### Bug Fixes
+
+* exclude dye dependency ([5c7321a](https://github.com/prostojs/tree/commit/5c7321a96253fb54a3abff27eea51d79c632884b))
+
+
+
 ## [0.1.3](https://github.com/prostojs/tree/compare/v0.1.2...v0.1.3) (2021-10-24)
 
 
