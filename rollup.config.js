@@ -225,7 +225,6 @@ function createReplacePlugin(
       replacements[key] = process.env[key]
     }
   })
-  console.log(replacements)
   return replace({
     values: replacements,
     preventAssignment: true
