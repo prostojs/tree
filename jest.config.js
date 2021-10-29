@@ -13,8 +13,6 @@ module.exports = {
       __ESM_BUNDLER__: true,
       __ESM_BROWSER__: false,
       __NODE_JS__: true,
-      'dye.dim': '[2m',
-      'dye-off.dim': '[22m',
     },
     rootDir: __dirname,
     testRegex: ".spec.ts$",
