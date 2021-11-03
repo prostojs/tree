@@ -1,3 +1,12 @@
+## [0.2.1](https://github.com/prostojs/tree/compare/v0.2.0...v0.2.1) (2021-11-03)
+
+
+### Features
+
+* add render options ([006c714](https://github.com/prostojs/tree/commit/006c7142501cae94dab969ab386d347aeff45c7e))
+
+
+
 # [0.2.0](https://github.com/prostojs/tree/compare/v0.1.3...v0.2.0) (2021-10-29)
 
 
