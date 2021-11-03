@@ -67,6 +67,23 @@ const options = {
 
 const tree = new ProstoTree(options)
 
-const stringResult = tree.render()
-tree.print() // console.log
+// render tree to string
+const stringResult = tree.render(/* tree, renderOptions? */)
+
+// console.log tree
+tree.print(/* tree, renderOptions? */)
+```
+
+### Render options
+
+```js
+const renderOptions = {
+    // limits the output to go as deep as the
+    // level value
+    level: 3,
+
+    // limits the output count of direct children
+    // nodes upto the childrenLimit value
+    childrenLimit: 5,
+})
 ```

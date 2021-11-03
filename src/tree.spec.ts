@@ -1,4 +1,4 @@
-import { ProstoTree } from '../'
+import { ProstoTree } from './'
 
 describe('ProstoTree', () => {
     it('must build tree', () => {
