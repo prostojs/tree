@@ -1,3 +1,12 @@
+## [0.2.2](https://github.com/prostojs/tree/compare/v0.2.1...v0.2.2) (2021-11-03)
+
+
+### Features
+
+* add show last to render options ([74c8959](https://github.com/prostojs/tree/commit/74c8959cd975ee2ca1df80f1a27a04bb5b610e4d))
+
+
+
 ## [0.2.1](https://github.com/prostojs/tree/compare/v0.2.0...v0.2.1) (2021-11-03)
 
 
