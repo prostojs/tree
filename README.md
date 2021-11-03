@@ -84,5 +84,11 @@ const renderOptions = {
     // limits the output count of direct children
     // nodes upto the childrenLimit value
     childrenLimit: 5,
+
+    // when showLast === true the first items
+    // over the limit will be hidden
+    // when showLast === false the last items
+    // over the limit will be hidden
+    showLast: true,
 })
 ```

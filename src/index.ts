@@ -36,14 +36,20 @@ export class ProstoTree<NodeType = unknown> {
         }
         
         function treeNode(node: unknown, behind = '', level = 1) {
-            const c = (node && (node as Record<string | number, unknown>)[children]) as unknown[]
-            const l = c && c.length || 0
-            if (c) {
+            const items = (node && (node as Record<string | number, unknown>)[children]) as unknown[]
+            const count = items && items.length || 0
+            if (items) {
                 if (opts?.level && opts.level < level) {
-                    s += behind + endBranch + renderCollapsedChildren(c.length) + '\n'
+                    s += behind + endBranch + renderCollapsedChildren(items.length) + '\n'
                 } else {
-                    c.slice(0, opts?.childrenLimit || undefined).forEach((childNode, i) => {
-                        const last = i + 1 === l
+                    let itemsToRender = items
+                    const collapsedCount = Math.max(0, count - (opts?.childrenLimit || count))
+                    if (opts?.childrenLimit && count > opts.childrenLimit) {
+                        itemsToRender = opts.showLast ? items.slice(count - opts.childrenLimit) : items.slice(0, opts.childrenLimit)
+                    }
+                    if (collapsedCount && opts?.showLast) s += behind + middleBranch + renderCollapsedChildren(collapsedCount) + '\n'
+                    itemsToRender.forEach((childNode, i) => {
+                        const last = i + 1 === count
                         const branch = last ? endBranch : middleBranch
                         const nextBehind = behind + (last ? ' ' : vLine) + ' '.repeat(branchWidth)
                         s += behind + branch + renderLabel(childNode as NodeType, nextBehind) + '\n'
@@ -51,9 +57,7 @@ export class ProstoTree<NodeType = unknown> {
                             treeNode(childNode, nextBehind, level + 1)
                         }
                     })
-                    if (opts?.childrenLimit && c.length > opts.childrenLimit) {
-                        s += behind + endBranch + renderCollapsedChildren(c.length - opts.childrenLimit) + '\n'
-                    }
+                    if (collapsedCount && !opts?.showLast) s += behind + endBranch + renderCollapsedChildren(collapsedCount) + '\n'
                 }
             }
         }
@@ -73,7 +77,7 @@ export class ProstoTree<NodeType = unknown> {
 }
 
 function renderCollapsedChildren(count: number): string {
-    return dim + '⁝(' + __DYE_ITALIC__ + count.toString() + ' more...)' + reset
+    return dim + '+ ' + __DYE_ITALIC__ + count.toString() + ` item${ count === 1 ? '' : 's' }` + reset
 }
 
 export interface TProstoTreeOptionsBranches {
@@ -94,4 +98,5 @@ export interface TProstoTreeOptions<NodeType = unknown> {
 export interface TProstoTreeRenderOptions {
     level?: number
     childrenLimit?: number
+    showLast?: boolean
 }
