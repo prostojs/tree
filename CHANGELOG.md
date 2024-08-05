@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/prostojs/tree/compare/v0.2.2...v0.3.0) (2024-08-05)
+
+
+### Features
+
+* breaking! add multiline nodes support ([5219e4b](https://github.com/prostojs/tree/commit/5219e4b1314a51a4ebd8c40b47636d71ef01e93a))
+
+
+
 ## [0.2.2](https://github.com/prostojs/tree/compare/v0.2.1...v0.2.2) (2021-11-03)
 
 
