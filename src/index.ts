@@ -2,67 +2,107 @@ const dim = __DYE_DIM__
 const reset = __DYE_RESET__
 
 export class ProstoTree<NodeType = unknown> {
-    private readonly options: TProstoTreeOptions<NodeType>
+    private readonly options: Required<
+        Omit<TProstoTreeOptions<NodeType>, 'branches'> & {
+            chars: TProstoTreeOptionsCharacters;
+        }
+    >;
 
     constructor(options?: Partial<TProstoTreeOptions<NodeType>>) {
         const label = options?.label || 'label'
         const children = options?.children || 'children'
-        const branchWidth = typeof options?.branchWidth === 'number' ? options?.branchWidth : 2
-        const hLine = (options?.branches?.hLine || '─').repeat(branchWidth - 1)
-        const branches: TProstoTreeOptionsBranches = {
-            end: options?.branches?.end || dim + '└',
-            middle: options?.branches?.middle || dim + '├',
-            vLine: options?.branches?.vLine || dim + '│',
+        const branchWidth =
+            typeof options?.branchWidth === 'number' ? options?.branchWidth : 2
+        const hLine = (options?.chars?.hLine || '─').repeat(branchWidth)
+        const chars: TProstoTreeOptionsCharacters = {
+            end: options?.chars?.end || dim + '└',
+            middle: options?.chars?.middle || dim + '├',
+            vLine: options?.chars?.vLine || dim + '│',
             hLine,
+            node: options?.chars?.node || '•',
         }
         this.options = {
             label: label,
-            children: children,
-            renderLabel: options?.renderLabel || (n => typeof n === 'string' ? n : (n as Record<string, unknown>)[label] as string),
-            branches,
+            children,
+            renderLabel:
+                options?.renderLabel ||
+                ((n) =>
+                    typeof n === 'string'
+                        ? n
+                        : ((n as Record<string, unknown>)[label] as string)),
+            chars,
             branchWidth,
         }
     }
 
     private _render(root: NodeType, opts?: TProstoTreeRenderOptions): string {
-        const { children, renderLabel } = this.options
-        let s = `${ renderLabel(root, '') }\n`
-        const { end, middle, vLine, hLine } = this.options.branches as TProstoTreeOptionsBranches
-        const endBranch = end + hLine + reset + ' '
-        const middleBranch = middle + hLine + reset + ' '
-        const { branchWidth } = this.options
-        if (root) {
-            treeNode(root)
-        }
-        
-        function treeNode(node: unknown, behind = '', level = 1) {
-            const items = (node && (node as Record<string | number, unknown>)[children]) as unknown[]
-            const count = items && items.length || 0
-            if (items) {
-                if (opts?.level && opts.level < level) {
-                    s += behind + endBranch + renderCollapsedChildren(items.length) + '\n'
-                } else {
-                    let itemsToRender = items
-                    const collapsedCount = Math.max(0, count - (opts?.childrenLimit || count))
-                    if (opts?.childrenLimit && count > opts.childrenLimit) {
-                        itemsToRender = opts.showLast ? items.slice(count - opts.childrenLimit) : items.slice(0, opts.childrenLimit)
-                    }
-                    if (collapsedCount && opts?.showLast) s += behind + middleBranch + renderCollapsedChildren(collapsedCount) + '\n'
-                    itemsToRender.forEach((childNode, i) => {
-                        const last = i + 1 === count
-                        const branch = last ? endBranch : middleBranch
-                        const nextBehind = behind + (last ? ' ' : vLine) + ' '.repeat(branchWidth)
-                        s += behind + branch + renderLabel(childNode as NodeType, nextBehind) + '\n'
-                        if (typeof childNode === 'object') {
-                            treeNode(childNode, nextBehind, level + 1)
-                        }
-                    })
-                    if (collapsedCount && !opts?.showLast) s += behind + endBranch + renderCollapsedChildren(collapsedCount) + '\n'
+        const { children, renderLabel, branchWidth: w, chars: c } = this.options
+        let count = 0
+        function renderNode(
+            node: Record<string, unknown>,
+            before = '',
+            level = 0,
+            openLevels: boolean[] = [],
+        ) {
+            count++
+
+            let s = ''
+            let pref = ''
+
+            for (let i = 0; i < level-1; i++) {
+                const isOpen = openLevels[i]
+                pref += `${isOpen ? c.vLine : ' '}${' '.repeat(w)}`
+            }
+            const labels = [renderLabel(node as NodeType, level)].flat()
+
+            const items = (node[children] || []) as Record<string, unknown>[]
+            openLevels[level] = !!items.length
+
+            let pref2 = ''
+            for (let i = 0; i <= level; i++) {
+                const isOpen = openLevels[i]
+                pref2 += `${isOpen ? c.vLine : ' '}${' '.repeat(w)}`
+            }
+            pref2 = pref2.slice(0, -w) + ' '
+            for (let i = 0; i < labels.length; i++) {
+                const l = labels[i]
+                if (i === 0) {
+                    s += `${pref}${before}${c.node} ${l}\n`
+                } else {                  
+                    s += `${pref2}${l}\n`
                 }
             }
+            if (items.length && opts?.level && level >= opts.level - 1) {
+                s += pref2 + renderCollapsedChildren(items.length) + '\n'
+                openLevels[level] = false
+            } else {           
+                for (let i = 0; i < items.length; i++) {
+                    const last = i === items.length - 1
+                    if (opts?.childrenLimit && i === opts.childrenLimit && (!opts.showLast || !last)) {
+                        s += pref2 + renderCollapsedChildren(items.length - i) + '\n'
+                        openLevels[level] = false
+                        if (opts.showLast) {
+                            s += `${renderNode(
+                                items[items.length - 1],
+                                `${c.end}${c.hLine}`,
+                                level + 1,
+                                openLevels,
+                            )}`
+                        }
+                        break
+                    }
+                    openLevels[level] = !last
+                    s += `${renderNode(
+                        items[i],
+                        `${last ? c.end : c.middle}${c.hLine}`,
+                        level + 1,
+                        openLevels,
+                    )}`
+                }
+            }
+            return s
         }
-
-        return s
+        return renderNode(root as Record<string, unknown>)
     }
 
     render(root: NodeType, opts?: TProstoTreeRenderOptions): string {
@@ -80,19 +120,20 @@ function renderCollapsedChildren(count: number): string {
     return dim + '+ ' + __DYE_ITALIC__ + count.toString() + ` item${ count === 1 ? '' : 's' }` + reset
 }
 
-export interface TProstoTreeOptionsBranches {
+export interface TProstoTreeOptionsCharacters {
     vLine: string
     hLine: string
     end: string
     middle: string
+    node: string
 }
 
 export interface TProstoTreeOptions<NodeType = unknown> {
     label: string
     children: string
-    renderLabel: (node: NodeType, behind: string) => string
+    renderLabel: (node: NodeType, level: number) => string | string[]
     branchWidth: number
-    branches: Partial<TProstoTreeOptionsBranches>
+    chars: Partial<TProstoTreeOptionsCharacters>
 }
 
 export interface TProstoTreeRenderOptions {
